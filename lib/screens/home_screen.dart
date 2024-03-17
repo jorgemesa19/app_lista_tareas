@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:app_lista_tareas/widgets/task_list_tile.dart'; // Importa el widget TaskListTile aquí
-import 'package:app_lista_tareas/models/task.dart'; // Importa el modelo Task aquí
+import 'package:app_lista_tareas/widgets/task_list_tile.dart';
+import 'package:app_lista_tareas/models/task.dart';
+import 'package:app_lista_tareas/widgets/add_task_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -42,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // Botón para agregar tarea
           ElevatedButton(
             onPressed: () {
-              _showAddTaskDialog(context);
+              _showAddTask(context); // Llama a la función para mostrar el diálogo de agregar tarea
             },
             child: Text('Agregar Tarea'),
           ),
@@ -51,41 +52,18 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _showAddTaskDialog(BuildContext context) {
-    String newTaskTitle = '';
-
-    showDialog(
+  void _showAddTask(BuildContext context) async {
+    final Task? newTask = await showDialog<Task>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Agregar Nueva Tarea'),
-          content: TextField(
-            onChanged: (value) {
-              newTaskTitle = value;
-            },
-            decoration: InputDecoration(hintText: 'Nombre de la Tarea'),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Cerrar el diálogo
-              },
-              child: Text('Cancelar'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (newTaskTitle.isNotEmpty) {
-                  setState(() {
-                    tasks.add(Task(title: newTaskTitle));
-                  });
-                  Navigator.of(context).pop(); // Cerrar el diálogo
-                }
-              },
-              child: Text('Aceptar'),
-            ),
-          ],
-        );
+        return AddTaskDialog();
       },
     );
+
+    if (newTask != null) {
+      setState(() {
+        tasks.add(newTask); // Agrega la nueva tarea a la lista de tareas
+      });
+    }
   }
 }
