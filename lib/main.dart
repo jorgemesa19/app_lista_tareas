@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:app_lista_tareas/screens/home_screen.dart'; // Importa la pantalla HomeScreen aquí
 
 void main() {
-  runApp(const MainApp());
+  runApp(MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+    return MaterialApp(
+      title: 'Lista de Tareas App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      home: HomeScreen(), // Define HomeScreen como la pantalla inicial de la aplicación
     );
   }
 }

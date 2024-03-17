@@ -1,5 +1,3 @@
-# app_lista_tareas
-
 Práctica lista de tareas:
 
 Crear una aplicación de lista de tareas (ToDo List) donde los usuarios puedan agregar tareas, marcarlas como completadas o eliminarlas.
