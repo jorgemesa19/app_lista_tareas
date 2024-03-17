@@ -26,8 +26,10 @@ class AddTaskDialog extends StatelessWidget {
         ElevatedButton(
           onPressed: () {
             if (newTaskTitle.isNotEmpty) {
-              Task newTask = Task(title: newTaskTitle); // Crea una nueva instancia de Task con el título proporcionado
-              Navigator.of(context).pop(newTask); // Envía la nueva tarea de vuelta al widget que mostró el diálogo
+              // Crear una nueva tarea
+              Task newTask = Task(title: newTaskTitle);
+              // Devolver la nueva tarea al cerrar el diálogo
+              Navigator.of(context).pop(newTask);
             }
           },
           child: Text('Aceptar'),

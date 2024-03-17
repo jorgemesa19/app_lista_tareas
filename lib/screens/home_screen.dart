@@ -5,13 +5,17 @@ import 'package:app_lista_tareas/widgets/add_task_dialog.dart';
 import 'package:app_lista_tareas/screens/history_screen.dart';
 
 class HomeScreen extends StatefulWidget {
+  final List<Task> tasks;
+
+  HomeScreen({required this.tasks});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Task> tasks = []; // Define una lista de tareas aquí
-  List<Task> deletedTasks = []; // Lista para tareas eliminadas
+  List<Task> get _filteredTasks =>
+      widget.tasks.where((task) => !task.isDeleted).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -21,40 +25,43 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          // Espacio flexible para la lista de tareas
           Expanded(
             child: ListView.builder(
-              itemCount: tasks.length,
+              itemCount: _filteredTasks.length,
               itemBuilder: (context, index) {
                 return TaskListTile(
-                  task: tasks[index],
+                  task: _filteredTasks[index],
                   onCheckboxChanged: (value) {
                     setState(() {
-                      tasks[index].isCompleted = value!;
+                      _filteredTasks[index].isCompleted = value!;
                     });
                   },
                   onDelete: () {
                     setState(() {
-                      deletedTasks.add(tasks[index]); // Agregar la tarea eliminada a la lista de tareas eliminadas
-                      tasks.removeAt(index);
+                      _filteredTasks[index].isDeleted = true; // Marcar como eliminada
                     });
                   },
                 );
               },
             ),
           ),
-          // Botón para agregar tarea
-          ElevatedButton(
-            onPressed: () {
-              _showAddTask(context); // Llama a la función para mostrar el diálogo de agregar tarea
-            },
-            child: Text('Agregar Tarea'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryScreen(tasks: tasks, deletedTasks: deletedTasks)));
-            },
-            child: Text('Historial'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryScreen(tasks: widget.tasks)));
+                },
+                child: Text('Historial'),
+              ),
+              SizedBox(width: 16), // Espacio entre los botones
+              ElevatedButton(
+                onPressed: () {
+                  _showAddTask(context);
+                },
+                child: Text('Agregar Tarea'),
+              ),
+            ],
           ),
         ],
       ),
@@ -62,17 +69,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _showAddTask(BuildContext context) async {
-    final Task? newTask = await showDialog<Task>(
+    final result = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AddTaskDialog();
       },
     );
 
-    if (newTask != null) {
+    // Verificar si se ha agregado una nueva tarea
+    if (result != null && result is Task) {
       setState(() {
-        tasks.add(newTask); // Agrega la nueva tarea a la lista de tareas
+        widget.tasks.add(result);
       });
     }
   }
 }
+
