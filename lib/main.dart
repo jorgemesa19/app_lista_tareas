@@ -15,11 +15,6 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => TaskProvider(), // Crea una instancia de TaskProvider
       child: MaterialApp(
-        title: 'Lista de Tareas App',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
         initialRoute: '/',
         routes: {
           '/': (context) {

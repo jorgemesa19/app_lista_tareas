@@ -4,35 +4,33 @@ import 'package:app_lista_tareas/models/task.dart';
 class AddTaskDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String newTaskTitle = ''; // Variable para almacenar el título de la nueva tarea
+    String newTaskTitle = '';
 
     return AlertDialog(
-      title: Text('Agregar Nueva Tarea'),
+      title: const Text('Agregar nueva tarea'),
       content: TextField(
         onChanged: (value) {
-          newTaskTitle = value; // Actualiza el título de la nueva tarea cuando cambia el texto en el TextField
+          newTaskTitle = value;
         },
-        decoration: InputDecoration(
-          hintText: 'Nombre de la Tarea',
+        decoration: const InputDecoration(
+          hintText: 'Nombre de la tarea',
         ),
       ),
       actions: <Widget>[
-        TextButton(
+        ElevatedButton(
           onPressed: () {
-            Navigator.of(context).pop(); // Cerrar el diálogo
+            Navigator.of(context).pop();
           },
-          child: Text('Cancelar'),
+          child: const Text('Cancelar', style: TextStyle(color: Colors.black87)),
         ),
         ElevatedButton(
           onPressed: () {
             if (newTaskTitle.isNotEmpty) {
-              // Crear una nueva tarea
               Task newTask = Task(title: newTaskTitle);
-              // Devolver la nueva tarea al cerrar el diálogo
               Navigator.of(context).pop(newTask);
             }
           },
-          child: Text('Aceptar'),
+          child: const Text('Aceptar', style: TextStyle(color: Colors.black87)),
         ),
       ],
     );

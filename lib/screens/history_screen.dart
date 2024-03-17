@@ -13,46 +13,70 @@ class HistoryScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Historial'),
+        title: const Text('Historial', style: TextStyle(color: Color.fromARGB(223, 0, 0, 0))),
+        backgroundColor: Colors.lightBlue[200], // Color azul claro
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Tareas Completadas Eliminadas:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            const SizedBox(height: 10),
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Tareas completadas eliminadas', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: completedDeletedTasks.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(completedDeletedTasks[index].title),
-                  trailing: Icon(Icons.delete, color: Colors.red),
-                );
-              },
-            ),
-            SizedBox(height: 20),
-            const Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Tareas Incompletas Eliminadas:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            SizedBox(
+              height: 150, // Ajusta la altura de la lista según sea necesario
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: completedDeletedTasks.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 16),
+                    child: Card(
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ListTile(
+                        title: Text(completedDeletedTasks[index].title),
+                        trailing: const Icon(Icons.check_circle, color: Colors.green),
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: incompleteDeletedTasks.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(incompleteDeletedTasks[index].title),
-                  trailing: Icon(Icons.delete, color: Colors.red),
-                );
-              },
+            const SizedBox(height: 10),
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Tareas incompletas eliminadas', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              ),
+            ),
+            SizedBox(
+              height: 150, // Ajusta la altura de la lista según sea necesario
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: incompleteDeletedTasks.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 16),
+                    child: Card(
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ListTile(
+                        title: Text(incompleteDeletedTasks[index].title),
+                        trailing: const Icon(Icons.cancel_rounded, color: Colors.red),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app_lista_tareas/widgets/task_list_tile.dart';
+//import 'package:app_lista_tareas/widgets/task_list_tile.dart';
 import 'package:app_lista_tareas/models/task.dart';
 import 'package:app_lista_tareas/widgets/add_task_dialog.dart';
 import 'package:app_lista_tareas/screens/history_screen.dart';
@@ -21,50 +21,64 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista de Tareas'),
+        title: const Text('Lista de Tareas', style: TextStyle(color: Colors.black87)),
+        backgroundColor: Colors.lightBlue.shade200,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: _filteredTasks.length,
-              itemBuilder: (context, index) {
-                return TaskListTile(
-                  task: _filteredTasks[index],
-                  onCheckboxChanged: (value) {
+      body: ListView.builder(
+        itemCount: _filteredTasks.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 16),
+            child: Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: ListTile(
+                title: Text(_filteredTasks[index].title),
+                leading: Checkbox(
+                  value: _filteredTasks[index].isCompleted,
+                  onChanged: (value) {
                     setState(() {
                       _filteredTasks[index].isCompleted = value!;
                     });
                   },
-                  onDelete: () {
+                ),
+                trailing: IconButton(
+                  icon: const Icon(Icons.delete, color: Colors.red),
+                  onPressed: () {
                     setState(() {
-                      _filteredTasks[index].isDeleted = true; // Marcar como eliminada
+                      _filteredTasks[index].isDeleted = true;
                     });
                   },
-                );
-              },
+                ),
+              ),
             ),
+          );
+        },
+      ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HistoryScreen(tasks: widget.tasks)),
+              );
+            },
+            child: const Text('Historial', style: TextStyle(color: Colors.black87)),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryScreen(tasks: widget.tasks)));
-                },
-                child: Text('Historial'),
-              ),
-              SizedBox(width: 16), // Espacio entre los botones
-              ElevatedButton(
-                onPressed: () {
-                  _showAddTask(context);
-                },
-                child: Text('Agregar Tarea'),
-              ),
-            ],
+          const SizedBox(width: 10),
+          ElevatedButton(
+            onPressed: () {
+              _showAddTask(context);
+            },
+            child: const Text('Agregar', style: TextStyle(color: Colors.black87)),
           ),
         ],
       ),
+
     );
   }
 
@@ -84,4 +98,3 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 }
-
