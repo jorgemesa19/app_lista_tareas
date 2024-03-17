@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:app_lista_tareas/screens/home_screen.dart'; // Importa la pantalla HomeScreen aquí
+import 'package:app_lista_tareas/screens/history_screen.dart'; // Importa la pantalla HistoryScreen aquí
 
 void main() {
   runApp(MyApp());
@@ -14,7 +15,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomeScreen(), // Define HomeScreen como la pantalla inicial de la aplicación
+      initialRoute: '/', // Ruta inicial
+      routes: {
+        '/': (context) => HomeScreen(),
+        '/history': (context) => HistoryScreen(tasks: [], deletedTasks: []), // Pasar una lista vacía de tareas como argumento inicial
+      },
     );
   }
 }

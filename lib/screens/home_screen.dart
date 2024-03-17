@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:app_lista_tareas/widgets/task_list_tile.dart';
 import 'package:app_lista_tareas/models/task.dart';
 import 'package:app_lista_tareas/widgets/add_task_dialog.dart';
+import 'package:app_lista_tareas/screens/history_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -10,6 +11,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Task> tasks = []; // Define una lista de tareas aquí
+  List<Task> deletedTasks = []; // Lista para tareas eliminadas
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   onDelete: () {
                     setState(() {
+                      deletedTasks.add(tasks[index]); // Agregar la tarea eliminada a la lista de tareas eliminadas
                       tasks.removeAt(index);
                     });
                   },
@@ -46,6 +49,12 @@ class _HomeScreenState extends State<HomeScreen> {
               _showAddTask(context); // Llama a la función para mostrar el diálogo de agregar tarea
             },
             child: Text('Agregar Tarea'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => HistoryScreen(tasks: tasks, deletedTasks: deletedTasks)));
+            },
+            child: Text('Historial'),
           ),
         ],
       ),
