@@ -6,33 +6,39 @@ import 'package:app_lista_tareas/models/task_provider.dart';
 class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final taskProvider = Provider.of<TaskProvider>(context);
+    
     return Scaffold(
       appBar: AppBar(
-        title: Text('Historial'),
+        title: const Text('Historial', style: TextStyle(color: Color.fromARGB(223, 0, 0, 0))),
+        backgroundColor: Colors.lightBlue[200], // Color azul claro
       ),
       body: StreamBuilder<List<Task>>(
-        stream: Provider.of<TaskProvider>(context).getTasks(),
+        stream: taskProvider.getTasks(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
-          List<Task> tasks = snapshot.data!;
-          List<Task> completedDeletedTasks = tasks.where((task) => task.isCompleted && task.isDeleted).toList();
-          List<Task> incompleteDeletedTasks = tasks.where((task) => !task.isCompleted && task.isDeleted).toList();
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          final tasks = snapshot.data ?? [];
+          final completedDeletedTasks = tasks.where((task) => task.isCompleted && task.isDeleted).toList();
+          final incompleteDeletedTasks = tasks.where((task) => !task.isCompleted && task.isDeleted).toList();
 
           return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 10),
-                Center(
+                const SizedBox(height: 10),
+                const Center(
                   child: Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text('Tareas completadas eliminadas', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   ),
                 ),
                 SizedBox(
-                  height: 150,
+                  height: 150, // Ajusta la altura de la lista según sea necesario
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: completedDeletedTasks.length,
@@ -46,22 +52,22 @@ class HistoryScreen extends StatelessWidget {
                           ),
                           child: ListTile(
                             title: Text(completedDeletedTasks[index].title),
-                            trailing: Icon(Icons.check_circle, color: Colors.green),
+                            trailing: const Icon(Icons.check_circle, color: Colors.green),
                           ),
                         ),
                       );
                     },
                   ),
                 ),
-                SizedBox(height: 10),
-                Center(
+                const SizedBox(height: 10),
+                const Center(
                   child: Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text('Tareas incompletas eliminadas', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   ),
                 ),
                 SizedBox(
-                  height: 150,
+                  height: 150, // Ajusta la altura de la lista según sea necesario
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: incompleteDeletedTasks.length,
@@ -75,7 +81,7 @@ class HistoryScreen extends StatelessWidget {
                           ),
                           child: ListTile(
                             title: Text(incompleteDeletedTasks[index].title),
-                            trailing: Icon(Icons.cancel_rounded, color: Colors.red),
+                            trailing: const Icon(Icons.cancel_rounded, color: Colors.red),
                           ),
                         ),
                       );
