@@ -1,15 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:app_lista_tareas/models/task.dart';
 
 class TaskProvider extends ChangeNotifier {
-  List<Task> _tasks = []; // Lista de tareas
+  final CollectionReference _tasksCollection = FirebaseFirestore.instance.collection('tasks');
 
-  List<Task> get tasks => _tasks; // Getter para obtener las tareas
-
-  void addTask(Task task) {
-    _tasks.add(task);
-    notifyListeners(); // Notifica a los oyentes de cambios
+  Future<void> addTask(Task task) async {
+    try {
+      await _tasksCollection.add(task.toMap());
+      notifyListeners();
+    } catch (e) {
+      print("Error adding task: $e");
+    }
   }
 
-  // Otros métodos para modificar las tareas
+  Stream<List<Task>> getTasks() {
+    return _tasksCollection.snapshots().map((snapshot) => snapshot.docs.map((doc) => Task.fromFirestore(doc)).toList());
+  }
+
+  Future<void> toggleTaskCompletion(String taskId, bool isCompleted) async {
+    try {
+      await _tasksCollection.doc(taskId).update({'isCompleted': isCompleted});
+      notifyListeners();
+    } catch (e) {
+      print("Error toggling task completion: $e");
+    }
+  }
+
+  Future<void> deleteTask(String taskId) async {
+    try {
+      await _tasksCollection.doc(taskId).delete();
+      notifyListeners();
+    } catch (e) {
+      print("Error deleting task: $e");
+    }
+  }
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; // Agrega esta línea
+
 import 'package:app_lista_tareas/models/task.dart';
+import 'package:app_lista_tareas/models/task_provider.dart';
 
 class AddTaskDialog extends StatelessWidget {
   @override
@@ -7,12 +10,12 @@ class AddTaskDialog extends StatelessWidget {
     String newTaskTitle = '';
 
     return AlertDialog(
-      title: const Text('Agregar nueva tarea'),
+      title: Text('Agregar nueva tarea'),
       content: TextField(
         onChanged: (value) {
           newTaskTitle = value;
         },
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           hintText: 'Nombre de la tarea',
         ),
       ),
@@ -21,16 +24,18 @@ class AddTaskDialog extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Cancelar', style: TextStyle(color: Colors.black87)),
+          child: Text('Cancelar'),
         ),
         ElevatedButton(
           onPressed: () {
             if (newTaskTitle.isNotEmpty) {
-              Task newTask = Task(title: newTaskTitle);
-              Navigator.of(context).pop(newTask);
+              String taskId = UniqueKey().toString(); // Genera un nuevo ID único
+              Task newTask = Task(id: taskId, title: newTaskTitle); // Pasa el ID al crear la nueva tarea
+              Provider.of<TaskProvider>(context, listen: false).addTask(newTask);
+              Navigator.of(context).pop();
             }
           },
-          child: const Text('Aceptar', style: TextStyle(color: Colors.black87)),
+          child: Text('Aceptar'),
         ),
       ],
     );
