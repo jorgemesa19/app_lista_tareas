@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:app_lista_tareas/models/task.dart';
 import 'package:app_lista_tareas/widgets/add_task_dialog.dart';
-import 'package:app_lista_tareas/screens/history_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:app_lista_tareas/models/task_provider.dart';
 
+// ignore: use_key_in_widget_constructors
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -17,10 +17,10 @@ class HomeScreen extends StatelessWidget {
         stream: Provider.of<TaskProvider>(context).getTasks(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No hay tareas'));
+            return const Center(child: Text('No hay tareas'));
           }
           final tasks = snapshot.data!;
           final filteredTasks = tasks.where((task) => !task.isDeleted).toList();
@@ -86,6 +86,7 @@ class HomeScreen extends StatelessWidget {
     );
 
     if (result != null && result is Task) {
+      // ignore: use_build_context_synchronously
       Provider.of<TaskProvider>(context, listen: false).addTask(result);
     }
   }

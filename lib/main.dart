@@ -1,8 +1,9 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_lista_tareas/screens/home_screen.dart'; 
 import 'package:app_lista_tareas/screens/history_screen.dart'; 
-import 'package:app_lista_tareas/models/task.dart'; 
 import 'package:app_lista_tareas/models/task_provider.dart'; 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
