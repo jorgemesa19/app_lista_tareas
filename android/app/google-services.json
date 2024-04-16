@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "891029680752",
+    "project_id": "actividadapptareas",
+    "storage_bucket": "actividadapptareas.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891029680752:android:9c03ab143f3e0d0a3efab5",
+        "android_client_info": {
+          "package_name": "com.example.app_lista_tareas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1rDcCdhQkPSrHTr3QVR_ucDctKJJqzBM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,8 +4,15 @@ import 'package:app_lista_tareas/screens/home_screen.dart';
 import 'package:app_lista_tareas/screens/history_screen.dart'; 
 import 'package:app_lista_tareas/models/task.dart'; 
 import 'package:app_lista_tareas/models/task_provider.dart'; 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Asegúrate de que los Widgets de Flutter estén inicializados
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -30,3 +37,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
